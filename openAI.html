@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <style>
+        /* Overall Page Styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to bottom right, #74ebd5, #acb6e5);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            width: 80%;
+            max-width: 1000px;
+            margin: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f1f1f1;
+            padding-bottom: 20px;
+        }
+        .section h3 {
+            margin-bottom: 10px;
+            color: #4CAF50;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-field {
+            padding: 15px;
+            width: 100%;
+            margin: 12px 0;
+            box-sizing: border-box;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1.1rem;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease;
+        }
+        .input-field:focus {
+            border-color: #4CAF50;
+            background-color: #ffffff;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        /* Resume Styling */
+        .resume-container {
+            display: none;
+            margin-top: 40px;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+        }
+
+        .resume-container h2 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .resume-container .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 20px;
+        }
+
+        .resume-container img {
+            max-width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #4CAF50;
+        }
+
+        .resume-container .content {
+            margin-top: 20px;
+        }
+
+        .resume-container .content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #4CAF50;
+            text-transform: uppercase;
+        }
+
+        .resume-container .content p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .resume-container .content ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .resume-container .content ul li {
+            list-style-type: square;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        /* Button to Edit Resume */
+        .edit-button {
+            background-color: #ff6f61;
+            color: white;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .edit-button:hover {
+            background-color: #ff5a47;
+        }
+
+        /* Share buttons */
+        .share-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .share-button {
+            background-color: #0077b5;
+            color: white;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .share-button:hover {
+            background-color: #005f8f;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Build Your Resume</h1>
+    
+    <!-- Personal Information Section -->
+    <div id="personalInfoInput" class="section">
+        <h3>Enter Your Personal Information</h3>
+        <input type="text" id="nameInput" class="input-field" placeholder="Enter your name">
+        <input type="text" id="addressInput" class="input-field" placeholder="Enter your address">
+        <input type="text" id="phoneInput" class="input-field" placeholder="Enter your phone number">
+        <input type="email" id="emailInput" class="input-field" placeholder="Enter your email">
+        <input type="file" id="imageInput" accept="image/*" onchange="loadImage(event)" class="input-field">
+        <button onclick="savePersonalInfo()" class="button">Save Personal Info</button>
+    </div>
+
+    <!-- Education Section -->
+    <div id="educationInput" class="section">
+        <h3>Enter Your Education</h3>
+        <input type="text" id="educationDegree" class="input-field" placeholder="Enter your degree">
+        <input type="text" id="educationUniversity" class="input-field" placeholder="Enter your university">
+        <input type="text" id="educationYear" class="input-field" placeholder="Enter your graduation year">
+        <button onclick="saveEducation()" class="button">Save Education</button>
+    </div>
+
+    <!-- Experience Section -->
+    <div id="experienceInput" class="section">
+        <h3>Enter Your Work Experience</h3>
+        <input type="text" id="experienceTitle" class="input-field" placeholder="Enter job title">
+        <input type="text" id="experienceCompany" class="input-field" placeholder="Enter company name">
+        <input type="text" id="experienceDuration" class="input-field" placeholder="Enter duration">
+        <textarea id="experienceDetails" class="input-field" placeholder="Enter job details"></textarea>
+        <button onclick="saveExperience()" class="button">Save Experience</button>
+    </div>
+
+    <!-- Skills Section -->
+    <div id="skillsInput" class="section">
+        <h3>Enter Your Skills (Comma separated)</h3>
+        <input type="text" id="skillsInputField" class="input-field" placeholder="Enter skills (e.g. C, Java, HTML)">
+        <button onclick="saveSkills()" class="button">Save Skills</button>
+    </div>
+
+    <!-- Projects Section -->
+    <div id="projectsInput" class="section">
+        <h3>Enter Your Projects</h3>
+        <input type="text" id="projectsInputField" class="input-field" placeholder="Enter your project name">
+        <textarea id="projectsDetailsField" class="input-field" placeholder="Enter project details"></textarea>
+        <button onclick="saveProjects()" class="button">Save Projects</button>
+    </div>
+
+    <button onclick="generateResume()" class="button">Generate Resume</button>
+
+    <!-- Resume Section -->
+    <div id="resumeContainer" class="resume-container">
+        <h2>Resume</h2>
+        <div class="header">
+            <div>
+                <h3 id="resumeName"></h3>
+                <p id="resumeAddress"></p>
+                <p id="resumePhone"></p>
+                <p id="resumeEmail"></p>
+            </div>
+            <img id="profileImage" alt="Profile Image">
+        </div>
+
+        <div class="content">
+            <h3>Education</h3>
+            <p id="resumeEducation"></p>
+            <h3>Work Experience</h3>
+            <p id="resumeExperience"></p>
+            <h3>Skills</h3>
+            <ul id="resumeSkills"></ul>
+            <h3>Projects</h3>
+            <ul id="resumeProjects"></ul>
+        </div>
+
+        <button onclick="editResume()" class="edit-button">Edit Resume</button>
+
+        <div class="share-buttons">
+            <button class="share-button" onclick="shareOnLinkedIn()">Share on LinkedIn</button>
+            <button class="share-button" onclick="shareOnGitHub()">Share on GitHub</button>
+        </div>
+
+        <button onclick="downloadResume()" class="button">Download Resume as PDF</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+    let image = "";
+
+    function loadImage(event) {
+        const output = document.getElementById('profileImage');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        image = output.src;
+    }
+
+    function savePersonalInfo() {
+        const name = document.getElementById("nameInput").value;
+        const address = document.getElementById("addressInput").value;
+        const phone = document.getElementById("phoneInput").value;
+        const email = document.getElementById("emailInput").value;
+
+        document.getElementById("resumeName").innerText = name;
+        document.getElementById("resumeAddress").innerText = address;
+        document.getElementById("resumePhone").innerText = phone;
+        document.getElementById("resumeEmail").innerText = email;
+        document.getElementById("profileImage").src = image;
+
+        document.getElementById("personalInfoInput").style.display = "none";
+    }
+
+    function saveEducation() {
+        const degree = document.getElementById("educationDegree").value;
+        const university = document.getElementById("educationUniversity").value;
+        const year = document.getElementById("educationYear").value;
+
+        if (degree && university && year) {
+            document.getElementById("resumeEducation").innerText = `${degree} from ${university}, Class of ${year}`;
+            document.getElementById("educationInput").style.display = "none";
+        }
+    }
+
+    function saveExperience() {
+        const title = document.getElementById("experienceTitle").value;
+        const company = document.getElementById("experienceCompany").value;
+        const duration = document.getElementById("experienceDuration").value;
+        const details = document.getElementById("experienceDetails").value;
+
+        if (title && company && duration && details) {
+            document.getElementById("resumeExperience").innerText = `${title} at ${company}, ${duration} - ${details}`;
+            document.getElementById("experienceInput").style.display = "none";
+        }
+    }
+
+    function saveSkills() {
+        const skills = document.getElementById("skillsInputField").value.split(",");
+        const skillsList = document.getElementById("resumeSkills");
+        skillsList.innerHTML = "";
+        skills.forEach(skill => {
+            const li = document.createElement("li");
+            li.textContent = skill.trim();
+            skillsList.appendChild(li);
+        });
+        document.getElementById("skillsInput").style.display = "none";
+    }
+
+    function saveProjects() {
+        const projectName = document.getElementById("projectsInputField").value;
+        const projectDetails = document.getElementById("projectsDetailsField").value;
+
+        if (projectName && projectDetails) {
+            const projectSection = document.createElement("li");
+            projectSection.innerHTML = `<strong>${projectName}:</strong> ${projectDetails}`;
+            document.getElementById("resumeProjects").appendChild(projectSection);
+            document.getElementById("projectsInput").style.display = "none";
+        }
+    }
+
+    function generateResume() {
+        document.getElementById("resumeContainer").style.display = "block";
+    }
+
+    function editResume() {
+        document.getElementById("resumeContainer").style.display = "none";
+        document.getElementById("personalInfoInput").style.display = "block";
+        document.getElementById("educationInput").style.display = "block";
+        document.getElementById("experienceInput").style.display = "block";
+        document.getElementById("skillsInput").style.display = "block";
+        document.getElementById("projectsInput").style.display = "block";
+    }
+
+    function downloadResume() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFont("Arial", "normal");
+        
+        const resumeContent = document.getElementById("resumeContainer").innerText;
+        doc.text(resumeContent, 10, 10);
+        doc.save("resume.pdf");
+    }
+
+    function shareOnLinkedIn() {
+        const linkedinURL = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`;
+        window.open(linkedinURL, "_blank");
+    }
+
+    function shareOnGitHub() {
+        const githubURL = `https://github.com/your-username/your-repo`; // Replace with your actual GitHub repo link
+        window.open(githubURL, "_blank");
+    }
+</script>
+
+</body>
+</html>
